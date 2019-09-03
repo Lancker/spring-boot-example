@@ -59,3 +59,31 @@ public class HelloWorldController {
 ![Alt text](http://static.bluersw.com/images/spring-boot-helloworld-9.png)  
 
 ## 对Controller模块进行单元测试
+
+在HelloWorldController类的helloworld方法上点击右键选择Generate...自动创建测试类HelloWorldControllerTest,利用MockMvc编写单元测试：  
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+public class HelloWorldControllerTest {
+
+    private MockMvc mvc;
+
+    @Before
+    public void setUp(){
+        mvc = MockMvcBuilders.standaloneSetup(new HelloWorldController()).build();
+    }
+
+    @Test
+    public void testHelloworld() throws Exception {
+        String result = mvc.perform(MockMvcRequestBuilders.get("/helloworld").accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect((status().isOk()))
+                .andExpect(content().string("你好！"))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println("log:" + result);
+    }
+}
+```
+
+![Alt text](http://static.bluersw.com/images/spring-boot-helloworld-10.png)  
